@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+LICENSE
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# CI/CD
+.github
+
+# Development
+.vscode
+.idea
+.editorconfig
+
+# Temporary files
+*.tmp
+*.log
+tmp/
+
+# Build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Test coverage
+*.out
+coverage.*
+*.coverprofile
