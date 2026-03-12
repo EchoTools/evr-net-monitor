@@ -34,6 +34,7 @@ go.work.sum
 # Build artifacts
 bin/
 dist/
+evr-net-monitor
 
 # Temporary files
 tmp/
