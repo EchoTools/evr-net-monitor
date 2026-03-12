@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
 
       - name: Setup Go
         uses: actions/setup-go@v5
@@ -56,7 +58,7 @@ jobs:
       - name: Upload immutable workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: evr-net-monitor-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.CLEAN_VERSION }}
+          name: evr-net-monitor-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.CLEAN_VERSION }}-${{ github.run_id }}
           path: ${{ env.ASSET_PATH }}
           if-no-files-found: error
           overwrite: false
@@ -67,4 +69,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          asset_name="$(basename "${ASSET_PATH}")"
+          if gh release view "${TAG}" --repo "${{ github.repository }}" --json assets --jq '.assets[].name' | grep -Fxq "$asset_name"; then
+            echo "Release asset already exists, leaving immutable artifact unchanged: $asset_name"
+            exit 0
+          fi
           gh release upload "${TAG}" "${ASSET_PATH}" --repo "${{ github.repository }}"
